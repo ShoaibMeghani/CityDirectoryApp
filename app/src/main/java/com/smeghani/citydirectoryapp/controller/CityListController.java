@@ -32,14 +32,18 @@ public class CityListController implements OnCityListDataListener {
     }
 
     public void initializeCityListData() {
-        cityListRepository.fetchCityList(this);
+        cityListRepository.fetchCityList(this,"cities.json");
     }
 
     public void filterCityList(String query) {
+        onCityListFiltered(filterList(query));
+    }
 
+
+    public List<City> filterList(String query) {
         if (query.length() == 0) {
-            onCityListFiltered(cityListRepository.getCityList());
-            return;
+
+            return cityListRepository.getCityList();
         }
 
         if (query.length() < indexStack.size()) {
@@ -56,26 +60,23 @@ public class CityListController implements OnCityListDataListener {
             Index i = findIndexOfQuery(query);
 
             if (i != null) {
-
                 indexStack.push(i);
-
             } else {
-                onCityListFiltered(null);
-                return;
+                return null;
             }
         }
 
         if (indexStack.peek().start == indexStack.peek().end) {
             ArrayList<City> list = new ArrayList<City>();
             list.add(cityListRepository.getCityList().get(indexStack.peek().start));
-            onCityListFiltered(list);
-            return;
+
+            return list;
         } else {
             Index index = findIndexOfQuery(query);
-            onCityListFiltered(cityListRepository.filterCityList(index.start, index.end));
+
+            return cityListRepository.filterCityList(index.start, index.end);
         }
     }
-
 
     @Override
     public void onCityListInitialized(List<City> cityList) {
@@ -103,7 +104,7 @@ public class CityListController implements OnCityListDataListener {
      * This method will create map that holds information of all prefix (1st char) used in the list.
      * This will optimise filtering for first character by iterating on chunk of list instead of all the records.
      */
-    public HashMap<Character, Index> createIndexData(ArrayList<City> list) {
+    public void createIndexData(ArrayList<City> list) {
         indexData = new HashMap<>();
         Character lastChar = list.get(0).getName().charAt(0);
         int tempIndex = 0;
@@ -119,14 +120,21 @@ public class CityListController implements OnCityListDataListener {
                 lastChar = list.get(i).getName().charAt(0);
             }
         }
-        return indexData;
+
+        //For edge case when last item has unique prefix
+        if (!indexData.containsKey(lastChar)) {
+                Index index = new Index();
+                index.start = tempIndex;
+                index.end = list.size() - 1;
+                indexData.put(lastChar,index);
+        }
     }
 
     /**
      * This method finds the start and end indexes in sub-array for given query. It is stored in stack
      * so that it keeps the track of previous query strings.
      */
-    public Index findIndexOfQuery(String query) {
+    private Index findIndexOfQuery(String query) {
 
         boolean wordFound = false;
         Index index = null;

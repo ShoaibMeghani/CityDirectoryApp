@@ -34,7 +34,7 @@ public class CityListRepository {
         gson = manager.provideGson();
     }
 
-    public void fetchCityList(final OnCityListDataListener listener) {
+    public void fetchCityList(final OnCityListDataListener listener, final String fileName) {
 
         //check if data already cached, no need to fetch
         if (cityList != null) {
@@ -45,9 +45,9 @@ public class CityListRepository {
 
                 @Override
                 protected Void doInBackground(Void... voids) {
+                    String data = JsonReaderHelper.loadJsonFromAssets(context, fileName);
 
-                    String dataStr = JsonReaderHelper.loadJsonFromAssets(context, "cities.json");
-                    prepareDataFromJson(dataStr);
+                    prepareDataFromJson(data);
 
                     return null;
                 }
@@ -62,7 +62,8 @@ public class CityListRepository {
 
     }
 
-    private void prepareDataFromJson(String data) {
+    public void prepareDataFromJson(String data) {
+
 
         JsonParser parser = new JsonParser();
         JsonElement tradeElement = parser.parse(data);
@@ -100,13 +101,15 @@ public class CityListRepository {
 
     }
 
-    public List<City> filterCityList(int startIndex,int endIndex){
-        return cityList.subList(startIndex,endIndex);
+    public List<City> filterCityList(int startIndex, int endIndex) {
+        return cityList.subList(startIndex, endIndex);
     }
 
-    public List<City> getCityList(){
+    public List<City> getCityList() {
         return cityList;
     }
+
+
 
 
 }
