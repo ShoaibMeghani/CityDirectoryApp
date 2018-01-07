@@ -57,7 +57,11 @@ public class CityListController implements OnCityListDataListener {
         }
 
         if (query.length() == 1) {
-            indexStack.push(indexData.get(query.charAt(0)));
+            if (indexData.containsKey(query.charAt(0))) {
+                indexStack.push(indexData.get(query.charAt(0)));
+            }else{
+                return null;
+            }
         } else {
             Index i = findIndexOfQuery(query);
 

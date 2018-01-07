@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -116,8 +117,9 @@ public class CityListFragment extends Fragment implements OnCityListDataListener
             ((MyCityRecyclerViewAdapter) cityListView.getAdapter()).setList(filteredCityList);
             lblNoData.setVisibility(View.GONE);
             cityListView.scrollToPosition(0);
+            cityListView.setVisibility(View.VISIBLE);
         } else {
-            ((MyCityRecyclerViewAdapter) cityListView.getAdapter()).clearAll();
+            cityListView.setVisibility(View.GONE);
             lblNoData.setVisibility(View.VISIBLE);
         }
     }
@@ -136,6 +138,16 @@ public class CityListFragment extends Fragment implements OnCityListDataListener
         etSearch = view.findViewById(R.id.et_search);
         pb = view.findViewById(R.id.pb);
         lblNoData = view.findViewById(R.id.lbl_nodata);
+
+        cityListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == 1){
+                    ((HomeActivity)getActivity()).hideKeyboard();
+                }
+            }
+        });
 
 
 

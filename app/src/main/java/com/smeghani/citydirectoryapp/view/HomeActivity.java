@@ -1,7 +1,9 @@
 package com.smeghani.citydirectoryapp.view;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -42,5 +44,12 @@ public class HomeActivity extends AppCompatActivity implements CityListFragment.
                         R.anim.enter_from_left, R.anim.exit_to_right)
                 .add(R.id.fragment_container, MapsFragment.newInstance(location, city.getCityDisplayedName()))
                 .addToBackStack(MapsFragment.TAG).commit();
+
+        hideKeyboard();
+    }
+
+    public void hideKeyboard(){
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(findViewById(android.R.id.content).getRootView().getWindowToken(), 0);
     }
 }
