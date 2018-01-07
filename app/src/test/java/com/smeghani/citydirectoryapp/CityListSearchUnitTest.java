@@ -6,6 +6,8 @@ import com.smeghani.citydirectoryapp.model.City;
 
 import org.junit.Test;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -27,7 +29,7 @@ public class CityListSearchUnitTest {
         String data = "[\n" +
                 "    {\n" +
                 "        \"country\": \"US\",\n" +
-                "        \"name\": \"Alabama\",\n" +
+                "        \"name\": \"Arizona\",\n" +
                 "        \"_id\": 707860,\n" +
                 "        \"coord\": {\n" +
                 "            \"lon\": 34.283333,\n" +
@@ -36,7 +38,7 @@ public class CityListSearchUnitTest {
                 "    },\n" +
                 "    {\n" +
                 "        \"country\": \"US\",\n" +
-                "        \"name\": \"Albuquerque\",\n" +
+                "        \"name\": \"Sydney\",\n" +
                 "        \"_id\": 519188,\n" +
                 "        \"coord\": {\n" +
                 "            \"lon\": 37.666668,\n" +
@@ -45,7 +47,7 @@ public class CityListSearchUnitTest {
                 "    },\n" +
                 "    {\n" +
                 "        \"country\": \"US\",\n" +
-                "        \"name\": \"Anaheim\",\n" +
+                "        \"name\": \"anaheim\",\n" +
                 "        \"_id\": 1283378,\n" +
                 "        \"coord\": {\n" +
                 "            \"lon\": 84.633331,\n" +
@@ -54,7 +56,7 @@ public class CityListSearchUnitTest {
                 "    },\n" +
                 "    {\n" +
                 "        \"country\": \"US\",\n" +
-                "        \"name\": \"Arizona\",\n" +
+                "        \"name\": \"Alabama\",\n" +
                 "        \"_id\": 1270260,\n" +
                 "        \"coord\": {\n" +
                 "            \"lon\": 76,\n" +
@@ -63,7 +65,7 @@ public class CityListSearchUnitTest {
                 "    },\n" +
                 "    {\n" +
                 "        \"country\": \"AU\",\n" +
-                "        \"name\": \"Sydney\",\n" +
+                "        \"name\": \"Albuquerque\",\n" +
                 "        \"_id\": 1270260,\n" +
                 "        \"coord\": {\n" +
                 "            \"lon\": 76,\n" +
@@ -74,10 +76,21 @@ public class CityListSearchUnitTest {
 
 
         DependencyManager.getInstance().provideCityListRepo().prepareDataFromJson(data);
-        cityListController.createIndexData((ArrayList<City>) DependencyManager.getInstance().provideCityListRepo().getCityList());
+        cityList = DependencyManager.getInstance().provideCityListRepo().getCityList();
+        cityListController.createIndexData((ArrayList<City>) cityList);
     }
 
 
+
+    @Test
+    public void checkCaseSensitivity(){
+        List<City> list = cityListController.filterList("a");
+
+        int sizeResult = list.size();
+        assertEquals(sizeResult,4);
+
+
+    }
 
     @Test
     public void checkInCompleteNameSearch(){
@@ -98,6 +111,7 @@ public class CityListSearchUnitTest {
         int sizeResult = list.size();
         assertEquals(sizeResult,5);
     }
+
 
     @Test
     public void checkNotExistingQuerySearch(){

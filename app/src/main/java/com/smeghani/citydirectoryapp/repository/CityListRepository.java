@@ -90,7 +90,7 @@ public class CityListRepository {
         Collections.sort(cityList, new Comparator<City>() {
             @Override
             public int compare(City s1, City s2) {
-                int compareVal = s1.getName().compareTo(s2.getName());
+                int compareVal = s1.getName().toLowerCase().compareTo(s2.getName().toLowerCase());
 
                 if (compareVal == 0)
                     compareVal = s1.getCountry().compareTo(s2.getCountry());
@@ -102,14 +102,12 @@ public class CityListRepository {
     }
 
     public List<City> filterCityList(int startIndex, int endIndex) {
-        return cityList.subList(startIndex, endIndex);
+        return cityList.subList(startIndex, endIndex+1);
     }
 
     public List<City> getCityList() {
         return cityList;
     }
-
-
 
 
 }
