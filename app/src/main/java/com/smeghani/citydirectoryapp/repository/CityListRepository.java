@@ -40,6 +40,7 @@ public class CityListRepository {
         if (cityList != null) {
             listener.onCityListInitialized(cityList);
         } else {
+            //fetching and preparing the data in background to keep app responsive.
             new AsyncTask<Void, Void, Void>() {
 
                 @Override
@@ -97,6 +98,14 @@ public class CityListRepository {
             }
         });
 
+    }
+
+    public List<City> filterCityList(int startIndex,int endIndex){
+        return cityList.subList(startIndex,endIndex);
+    }
+
+    public List<City> getCityList(){
+        return cityList;
     }
 
 

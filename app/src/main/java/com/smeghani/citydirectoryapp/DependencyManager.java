@@ -3,6 +3,7 @@ package com.smeghani.citydirectoryapp;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.smeghani.citydirectoryapp.repository.CityListRepository;
 
 /**
  * Created by shoaibmeghani on 07/01/2018.
@@ -15,6 +16,8 @@ public class DependencyManager {
 
     private Context applicationContext;
     private Gson gson;
+    private CityListRepository cityListRepository;
+
     private static DependencyManager instance;
 
     private DependencyManager() {
@@ -42,5 +45,13 @@ public class DependencyManager {
 
         return this.gson;
     }
+
+    public CityListRepository provideCityListRepo(){
+        if (cityListRepository == null)
+            cityListRepository = new CityListRepository(this);
+
+        return this.cityListRepository;
+    }
+
 
 }
