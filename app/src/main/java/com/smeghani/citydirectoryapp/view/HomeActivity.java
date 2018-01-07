@@ -3,6 +3,8 @@ package com.smeghani.citydirectoryapp.view;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.smeghani.citydirectoryapp.BaseApplication;
 import com.smeghani.citydirectoryapp.R;
@@ -22,13 +24,23 @@ public class HomeActivity extends AppCompatActivity implements CityListFragment.
             CityListFragment fragment = CityListFragment
                     .newInstance(((BaseApplication) getApplication()).getDependencyManager());
 
-            getSupportFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left,
+                    R.anim.enter_from_left, R.anim.exit_to_right)
                     .add(R.id.fragment_container, fragment, CityListFragment.TAG).commit();
         }
     }
 
     @Override
     public void onCityItemClick(City item) {
+        showCityLocation(item);
+    }
 
+    public void showCityLocation(City city) {
+        LatLng location = new LatLng(city.getCoord().getLat(), city.getCoord().getLon());
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left,
+                        R.anim.enter_from_left, R.anim.exit_to_right)
+                .add(R.id.fragment_container, MapsFragment.newInstance(location, city.getCityDisplayedName()))
+                .addToBackStack(MapsFragment.TAG).commit();
     }
 }

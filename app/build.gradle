@@ -30,4 +30,7 @@ dependencies {
 
     // Gson dependency
     compile 'com.google.code.gson:gson:2.8.1'
+
+    // For Maps
+    implementation 'com.google.android.gms:play-services-maps:11.6.2'
 }

@@ -2,4 +2,9 @@
     <string name="app_name">City Directory App</string>
     <string name="hint_city_filter">Please type here to search</string>
     <string name="lbl_nodata">No cities found.</string>
+
+    <string name="google_maps_key">AIzaSyB53iHNpSxGH5OLdNNWtPaIB19osD0P5KA</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
