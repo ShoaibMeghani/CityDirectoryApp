@@ -52,4 +52,8 @@ public class City {
     public void setCoord(Coord coord) {
         this.coord = coord;
     }
+
+    public String getCityDisplayedName(){
+        return this.name + ", " + this.country;
+    }
 }

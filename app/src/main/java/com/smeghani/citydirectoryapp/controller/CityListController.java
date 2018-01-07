@@ -24,6 +24,7 @@ public class CityListController implements OnCityListDataListener {
 
     public CityListController(DependencyManager dependencyManager) {
         cityListRepository = dependencyManager.provideCityListRepo();
+        indexStack = new Stack<>();
     }
 
     public void setCityListDataListener(OnCityListDataListener cityDataListener) {
@@ -38,6 +39,7 @@ public class CityListController implements OnCityListDataListener {
 
         if (query.length() == 0) {
             onCityListFiltered(cityListRepository.getCityList());
+            return;
         }
 
         if (query.length() < indexStack.size()) {
@@ -131,17 +133,18 @@ public class CityListController implements OnCityListDataListener {
 
         for (int i = indexStack.peek().start; i <= indexStack.peek().end; i++) {
 
-            if (!wordFound && cityListRepository.getCityList().get(i).getName().startsWith(query)) {
+            if (!wordFound && cityListRepository.getCityList().get(i).getCityDisplayedName().startsWith(query)) {
                 index = new Index();
                 index.start = i;
                 wordFound = true;
             }
 
-            if (wordFound && !cityListRepository.getCityList().get(i).getName().startsWith(query)) {
+            if (wordFound && !cityListRepository.getCityList().get(i).getCityDisplayedName().startsWith(query)) {
                 index.end = i - 1;
                 break;
             }
 
+            //if end is reached and all items matched
             if (index != null && i == (indexStack.peek().end) && index.end == 0) {
                 index.end = i;
             }

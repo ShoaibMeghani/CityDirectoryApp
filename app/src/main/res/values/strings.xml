@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">CityDirectoryApp</string>
+    <string name="app_name">City Directory App</string>
+    <string name="hint_city_filter">Please type here to search</string>
+    <string name="lbl_nodata">No cities found.</string>
 </resources>

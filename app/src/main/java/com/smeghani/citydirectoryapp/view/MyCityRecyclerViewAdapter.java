@@ -15,10 +15,10 @@ import java.util.List;
 
 public class MyCityRecyclerViewAdapter extends RecyclerView.Adapter<MyCityRecyclerViewAdapter.ViewHolder> {
 
-    private final List<City> mValues;
+    private List<City> mValues;
     private final OnCityListItemClickListener mListener;
 
-    public MyCityRecyclerViewAdapter(List<City> items, CityListFragment.OnCityListItemClickListener listener) {
+    MyCityRecyclerViewAdapter(List<City> items, CityListFragment.OnCityListItemClickListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -33,8 +33,7 @@ public class MyCityRecyclerViewAdapter extends RecyclerView.Adapter<MyCityRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getId());
-        holder.mContentView.setText(mValues.get(position).getName());
+        holder.mContentView.setText(mValues.get(position).getCityDisplayedName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,21 +53,30 @@ public class MyCityRecyclerViewAdapter extends RecyclerView.Adapter<MyCityRecycl
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public City mItem;
+        private final View mView;
+        private final TextView mContentView;
+        private City mItem;
 
-        public ViewHolder(View view) {
+         ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mContentView = view.findViewById(R.id.city_name);
         }
 
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
         }
+    }
+
+    public void clearAll(){
+        mValues.clear();
+        notifyDataSetChanged();
+    }
+
+    public void setList(List<City> list){
+        mValues = list;
+        notifyDataSetChanged();
+
     }
 }
