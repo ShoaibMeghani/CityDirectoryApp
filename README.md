@@ -6,7 +6,7 @@ Complete solution can be found on a public github repository.
 
 | Name | Github Link |
 | ------ | ------ |
-| CityDirectoryApp | [Source Code](https://www.google.com) |
+| CityDirectoryApp | [Source Code](https://github.com/ShoaibMeghani/CityDirectoryApp) |
 
 ### Problem
 Fetch a list of cities from a local JSON file and show sorted city list in android app. Size of the record is around 200k. App should be optimised for searching and filtering out results in realtime (as user types).
