@@ -85,6 +85,9 @@ public class CityListRepository {
 
     }
 
+    /**
+     * This methods sorts the list ignoring case.
+     */
     private void sortList(List<City> cityList) {
 
         Collections.sort(cityList, new Comparator<City>() {
@@ -102,7 +105,7 @@ public class CityListRepository {
     }
 
     public List<City> filterCityList(int startIndex, int endIndex) {
-        return cityList.subList(startIndex, endIndex+1);
+        return cityList.subList(startIndex, endIndex + 1);
     }
 
     public List<City> getCityList() {

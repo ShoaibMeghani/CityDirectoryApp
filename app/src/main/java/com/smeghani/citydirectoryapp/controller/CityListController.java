@@ -13,6 +13,8 @@ import java.util.Stack;
 
 /**
  * Created by shoaibmeghani on 07/01/2018.
+ * <p>
+ * This class is responsible for managing search functionality.
  */
 
 public class CityListController implements OnCityListDataListener {
@@ -32,46 +34,44 @@ public class CityListController implements OnCityListDataListener {
     }
 
     public void initializeCityListData() {
-        cityListRepository.fetchCityList(this,"cities.json");
+        cityListRepository.fetchCityList(this, "cities.json");
     }
 
     public void filterCityList(String query) {
         onCityListFiltered(filterList(query));
     }
 
-
+    /**
+     * This method keeps track of character indexes in stack
+     * and fetches the sublist based on the ranges.
+     */
     public List<City> filterList(String query) {
 
         query = query.toLowerCase();
         if (query.length() == 0) {
-
             return cityListRepository.getCityList();
         }
-
+        //if user removes a character from query string, pop the ranges of that character from stack
         if (query.length() < indexStack.size()) {
-
             while (query.length() < indexStack.size()) {
                 indexStack.pop();
             }
-
         }
-
         if (query.length() == 1) {
             if (indexData.containsKey(query.charAt(0))) {
                 indexStack.push(indexData.get(query.charAt(0)));
-            }else{
+            } else {
                 return null;
             }
         } else {
             Index i = findIndexOfQuery(query);
-
             if (i != null) {
                 indexStack.push(i);
             } else {
                 return null;
             }
         }
-
+        //if there is only one value in the list, start and end will be same
         if (indexStack.peek().start == indexStack.peek().end) {
             ArrayList<City> list = new ArrayList<City>();
             list.add(cityListRepository.getCityList().get(indexStack.peek().start));
@@ -107,7 +107,7 @@ public class CityListController implements OnCityListDataListener {
 
 
     /**
-     * This method will create map that holds information of all prefix (1st char) used in the list.
+     * This method will create map that holds index ranges of all prefix (1st char) used in the list.
      * This will optimise filtering for first character by iterating on chunk of list instead of all the records.
      */
     public void createIndexData(ArrayList<City> list) {
@@ -128,10 +128,10 @@ public class CityListController implements OnCityListDataListener {
 
         //For edge case when last item has unique prefix
         if (!indexData.containsKey(Character.toLowerCase(lastChar))) {
-                Index index = new Index();
-                index.start = tempIndex;
-                index.end = list.size() - 1;
-                indexData.put(Character.toLowerCase(lastChar),index);
+            Index index = new Index();
+            index.start = tempIndex;
+            index.end = list.size() - 1;
+            indexData.put(Character.toLowerCase(lastChar), index);
         }
     }
 

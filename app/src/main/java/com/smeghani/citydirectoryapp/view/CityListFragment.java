@@ -139,6 +139,7 @@ public class CityListFragment extends Fragment implements OnCityListDataListener
         pb = view.findViewById(R.id.pb);
         lblNoData = view.findViewById(R.id.lbl_nodata);
 
+        //hide keyboard if user scrolls the list.
         cityListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
