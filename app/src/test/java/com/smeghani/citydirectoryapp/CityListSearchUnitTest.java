@@ -4,6 +4,8 @@ package com.smeghani.citydirectoryapp;
 import com.smeghani.citydirectoryapp.controller.CityListController;
 import com.smeghani.citydirectoryapp.model.City;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,11 +21,12 @@ import static org.junit.Assert.*;
 
 public class CityListSearchUnitTest {
 
-    private List<City> cityList;
-    private CityListController cityListController;
+    private static List<City> cityList;
+    private static CityListController cityListController;
 
 
-    public CityListSearchUnitTest(){
+    @BeforeClass
+    public static void setUp(){
         cityListController = new CityListController(DependencyManager.getInstance());
 
         String data = "[\n" +
@@ -142,5 +145,11 @@ public class CityListSearchUnitTest {
 
         City city =list.get(0);
         assertEquals(city.getName(),"Alabama");
+    }
+
+    @AfterClass
+    public static void tearDown(){
+        cityList = null;
+        cityListController = null;
     }
 }
